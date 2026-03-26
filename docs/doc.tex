@@ -1,0 +1,161 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{parskip}
+
+\title{MNS-UC}
+\author{Jan Francak}
+\date{March 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Use cases}
+
+\subsection{UC-1: User registers}
+
+\begin{description}
+    \item[Description:] New user registers himself in the system.
+    \item[Pre-condition:] The system is on and running.
+    \item[Main Scenario:] \hfill
+    \begin{enumerate}
+        \item User opens registration page.
+        \item User fills in the details.
+        \item User clicks the "Register" button.
+        \item Application creates a new record with the inputted details.
+    \end{enumerate}
+    \item[Post-condition:] A new record is saved in the database.
+    \item[Alternative Scenario:] \hfill
+    \item[A1] The user uses details already used in a record.
+    \begin{enumerate}
+        \item Step 4. Main scenario.
+        \item System detects duplicate data.
+        \item Already used details get highlighted in red and "Already in use" appears above the top left corner of the form.
+        \item User inputs new details.
+        \item Step 3. Main scenario.
+    \end{enumerate}
+\end{description}
+
+\newpage
+
+\subsection{UC-2: Employee bans a customer}
+
+\begin{description}
+    \item[Description:] Employee bans a customer due to him breaking the rules
+    \item[Pre-condition:] The system is on and running. The user is registered. Employee logged in
+    \item[Main Scenario:] \hfill
+    \begin{enumerate}
+        \item Employee opens the list of customers.
+        \item Uses any of the known details to locate the customer in the list.
+        \item Clicks the "Ban" button.
+        \item Pop-up confirmation window opens up.
+        \item Presses "Confirm" button.
+        \item Customer's "Restricted" detail is set to true.
+    \end{enumerate}
+    \item[Post-condition:] Customer cannot participate in races anymore.
+    \item[Alternative Scenario:] \hfill
+    \item[A1] Employee decides to cancel
+    \begin{enumerate}
+        \item Step 4. Main scenario.
+        \item Employee presses "Cancel" button.
+        \item System goes back to list of customers tab.
+        \item No change request is sent to database.
+    \end{enumerate}
+\end{description}
+
+\newpage
+
+\subsection{UC-3: Employee sets up a race}
+
+\begin{description}
+    \item[Description:] Employee prepares the system for a new race
+    \item[Pre-condition:] The system is on and running. Employee is logged in. RaceControl is on.
+    \item[Main Scenario:] \hfill
+    \begin{enumerate}
+        \item Employee clicks the "Race set-up" tab.
+        \item Fills in the details.
+        \item Presses "Confirm" button.
+        \item Request is sent to RaceControl..
+    \end{enumerate}
+    \item[Post-condition:] RaceControl handles the race, system is ready to receive results.
+    \item[Alternative Scenario:] \hfill
+    \item[A1] Race already happening
+    \begin{enumerate}
+        \item Step 4. Main scenario.
+        \item RaceControl responds with an error message.
+        \item Pop-up is displayed with the error message.
+        \item Employee clicks "Confirm"
+    \end{enumerate}
+\end{description}
+
+\subsection{UC-4: RaceControl saves race results}
+
+\begin{description}
+    \item[Description:] RaceControl sends details of a race result
+    \item[Pre-condition:] System is on and running. Race currently happening.
+    \item[Main Scenario:] \hfill
+    \begin{enumerate}
+        \item RaceControl registers a go-cart finishing a race.
+        \item RaceControl sends a request to the web application with the attached data.
+        \item App catches the request.
+        \item App collects the data.
+        \item App checks the database for duplicate submission.
+        \item App saves the data in the database.
+    \end{enumerate}
+    \item[Post-condition:] Race result is saved in the database and can be displayed.
+    \item[Alternative Scenario:] \hfill
+    \item[A1] Invalid data
+    \begin{enumerate}
+        \item Step 4. Main scenario.
+        \item App detects corrupted data.
+        \item App rejects the data and does not touch the database.
+        \item App sends back an error message.
+        \item App goes back to listening for incoming transmissions.
+    \end{enumerate}
+    \item[A2] Duplicate submission
+    \begin{enumerate}
+        \item Step 5. Main scenario.
+        \item App detects already saved identical data
+        \item App rejects the data and does not touch the database.
+        \item App sends back a success message.
+        \item App goes back to listening for incoming transmissions.
+    \end{enumerate}
+    \item[A3] Incorrect security token
+    \begin{enumerate}
+        \item Step 3. Main scenario.
+        \item App detects incorrect security token
+        \item App rejects the data.
+        \item App sends back an error message.
+        \item App goes back to listening for incoming transmissions.
+    \end{enumerate}
+\end{description}
+
+\subsection{UC-5 Employee performs maintenance}
+
+\begin{description}
+    \item[Description:] Employee checks the system for any need of maintenance, does the maintenance and then updates the records
+    \item[Pre-condition:] The system is on and running. Employee is logged in.
+    \item[Main Scenario:] \hfill
+    \begin{enumerate}
+        \item Employee clicks the "Maintenance" tab.
+        \item Finds a go-kart with expired maintenance.
+        \item Performs the maintenance.
+        \item Clicks the "Add" button.
+        \item Fills out the form.
+        \item Click "Confirm".
+        \item System adds a new record in the database.
+        \item System updates the "Latest maintenance" of the kart in the table.
+    \end{enumerate}
+    \item[Post-condition:] The table shows updated date of maintenance.
+    \item[Alternative Scenario:] \hfill
+    \item[A1] Invalid data in the form
+    \begin{enumerate}
+        \item Step 6. Main scenario.
+        \item System detects invalid data in the form.
+        \item Invalid data are marked with a red border.
+        \item Employee fixes the mistakes.
+        \item Step 6. Main scenario.
+    \end{enumerate}
+\end{description}
+
+\end{document}
