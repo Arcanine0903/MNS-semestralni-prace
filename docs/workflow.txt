@@ -1,5 +1,0 @@
-Registration:
-User registers -> Employee finds him in the system -> Employee creates User's card
-
-Race registration:
-Employee sets up the race -> RaceControl opens the race up for registration -> Users use their card to register

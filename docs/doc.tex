@@ -19,24 +19,32 @@
     \item[Pre-condition:] The system is on and running.
     \item[Main Scenario:] \hfill
     \begin{enumerate}
-        \item User opens registration page.
         \item User fills in the details.
         \item User clicks the "Register" button.
+        \item Application checks for duplicates
+        \item Success pop-up appears.
         \item Application creates a new record with the inputted details.
     \end{enumerate}
-    \item[Post-condition:] A new record is saved in the database.
+    \item[Post-condition:] Registration page gets open, ready to be used again.
     \item[Alternative Scenario:] \hfill
-    \item[A1] The user uses details already used in a record.
+    \item[A1:] The user uses details already used in a record.
     \begin{enumerate}
-        \item Step 4. Main scenario.
-        \item System detects duplicate data.
-        \item Already used details get highlighted in red and "Already in use" appears above the top left corner of the form.
-        \item User inputs new details.
         \item Step 3. Main scenario.
+        \item System detects duplicate data.
+        \item Already used details get highlighted in red and "Already in use" appears under the bottom right corner of the form.
+        \item User inputs new details.
+        \item Step 2. Main scenario.
+    \end{enumerate}
+    
+\newpage
+
+    \item[A2:] Registration page not open
+    \begin{enumerate}
+        \item User clicks on "Registration" tab
+        \item Registration page opens
+        \item Step 1. Main scenario
     \end{enumerate}
 \end{description}
-
-\newpage
 
 \subsection{UC-2: Employee bans a customer}
 
@@ -52,9 +60,9 @@
         \item Presses "Confirm" button.
         \item Customer's "Restricted" detail is set to true.
     \end{enumerate}
-    \item[Post-condition:] Customer cannot participate in races anymore.
+    \item[Post-condition:] List of customers stays opened.
     \item[Alternative Scenario:] \hfill
-    \item[A1] Employee decides to cancel
+    \item[A1:] Employee decides to cancel
     \begin{enumerate}
         \item Step 4. Main scenario.
         \item Employee presses "Cancel" button.
@@ -69,24 +77,28 @@
 
 \begin{description}
     \item[Description:] Employee prepares the system for a new race
-    \item[Pre-condition:] The system is on and running. Employee is logged in. RaceControl is on.
+    \item[Pre-condition:] The system is on and running. Employee is logged in.
     \item[Main Scenario:] \hfill
     \begin{enumerate}
         \item Employee clicks the "Race set-up" tab.
         \item Fills in the details.
         \item Presses "Confirm" button.
-        \item Request is sent to RaceControl..
+        \item System checks for invalid data.
+        \item Success pop-up appears.
+        \item Request is sent to RaceControl.
     \end{enumerate}
-    \item[Post-condition:] RaceControl handles the race, system is ready to receive results.
+    \item[Post-condition:] "Race set-up" tab stays opened. System is ready to recieve data.
     \item[Alternative Scenario:] \hfill
-    \item[A1] Race already happening
+    \item[A1:] Invalid data 
     \begin{enumerate}
         \item Step 4. Main scenario.
-        \item RaceControl responds with an error message.
-        \item Pop-up is displayed with the error message.
-        \item Employee clicks "Confirm"
+        \item Invalid data gets highlighted in red and "Invalid" appears under the bottom right corner of the form.
+        \item Employee fixes the mistake.
+        \item Step 3. Main scenario.
     \end{enumerate}
 \end{description}
+
+\newpage
 
 \subsection{UC-4: RaceControl saves race results}
 
@@ -95,40 +107,32 @@
     \item[Pre-condition:] System is on and running. Race currently happening.
     \item[Main Scenario:] \hfill
     \begin{enumerate}
-        \item RaceControl registers a go-cart finishing a race.
         \item RaceControl sends a request to the web application with the attached data.
         \item App catches the request.
         \item App collects the data.
+        \item App checks for invalid data
         \item App checks the database for duplicate submission.
         \item App saves the data in the database.
     \end{enumerate}
-    \item[Post-condition:] Race result is saved in the database and can be displayed.
+    \item[Post-condition:] App goes back for listening for incoming transmissions
     \item[Alternative Scenario:] \hfill
-    \item[A1] Invalid data
+    \item[A1:] Invalid data
     \begin{enumerate}
         \item Step 4. Main scenario.
         \item App detects corrupted data.
         \item App rejects the data and does not touch the database.
         \item App sends back an error message.
-        \item App goes back to listening for incoming transmissions.
     \end{enumerate}
-    \item[A2] Duplicate submission
+    \item[A2:] Duplicate submission
     \begin{enumerate}
         \item Step 5. Main scenario.
         \item App detects already saved identical data
         \item App rejects the data and does not touch the database.
         \item App sends back a success message.
-        \item App goes back to listening for incoming transmissions.
-    \end{enumerate}
-    \item[A3] Incorrect security token
-    \begin{enumerate}
-        \item Step 3. Main scenario.
-        \item App detects incorrect security token
-        \item App rejects the data.
-        \item App sends back an error message.
-        \item App goes back to listening for incoming transmissions.
     \end{enumerate}
 \end{description}
+
+\newpage
 
 \subsection{UC-5 Employee performs maintenance}
 
@@ -143,16 +147,17 @@
         \item Clicks the "Add" button.
         \item Fills out the form.
         \item Click "Confirm".
+        \item System checks for invalid data.
+        \item Success pop-up appears.
         \item System adds a new record in the database.
-        \item System updates the "Latest maintenance" of the kart in the table.
     \end{enumerate}
-    \item[Post-condition:] The table shows updated date of maintenance.
+    \item[Post-condition:] "Maintenance" tab reloads and shows updated data.
     \item[Alternative Scenario:] \hfill
-    \item[A1] Invalid data in the form
+    \item[A1:] Invalid data in the form
     \begin{enumerate}
-        \item Step 6. Main scenario.
-        \item System detects invalid data in the form.
-        \item Invalid data are marked with a red border.
+        \item Step 7. Main scenario.
+        \item Detects invalid data.
+        \item Invalid data gets highlighted in red and "Invalid" appears under the bottom right corner of the form.
         \item Employee fixes the mistakes.
         \item Step 6. Main scenario.
     \end{enumerate}
