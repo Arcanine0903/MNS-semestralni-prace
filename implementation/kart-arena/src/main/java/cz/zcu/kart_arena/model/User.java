@@ -2,12 +2,10 @@ package cz.zcu.kart_arena.model;
 
 import jakarta.persistence.*;
 
-/**
- * User class representing a single user in the database.
- */
 @Entity
-@Table(name = "app_user")
-public class User {
+@Table(name = "users")
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,56 +14,18 @@ public class User {
     @Column(unique = true, nullable = false)
     private String username;
 
-    @Column(unique = true, nullable = false)
-    private String email;
-
     @Column(nullable = false)
-    private String password; // For testing purposes currently unhashed
+    private String password;
 
-    private boolean isRestricted = false;
-
-    // Empty constructor required by JPA
     public User() {}
 
-    /**
-     * User class constructor
-     * @param username - user's username
-     * @param email - user's email
-     * @param password - user's password
-     */
-    public User(String username, String email, String password) {
+    public User(String username, String password) {
         this.username = username;
-        this.email = email;
         this.password = password;
     }
 
     // Getters
-    public Long getId(){
-        return this.id;
-    }
-    public String getUsername(){
-        return this.username;
-    }
-    public String getEmail() {
-        return this.email;
-    }
-    public boolean isRestricted(){
-        return this.isRestricted;
-    }
-
-    // Business methods
-
-    /**
-     * Bans the user
-     */
-    public void ban() {
-        this.isRestricted = true;
-    }
-
-    /**
-     * Unbans the user
-     */
-    public void unban() {
-        this.isRestricted = false;
-    }
+    public Long getId() { return id; }
+    public String getUsername() { return username; }
+    public String getPassword() { return password; }
 }
