@@ -12,6 +12,7 @@ import java.util.List;
 /**
  * Controller for Racer-related operations.
  */
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/racers")
 public class RacerController {
