@@ -62,6 +62,16 @@ public class RacerService {
         } else throw new IllegalArgumentException("User is not a racer.");
     }
 
+    public void unbanRacer(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Racer not found.") );
+
+        if (user instanceof Racer racer) {
+            racer.unban();
+
+            userRepository.save(racer);
+        } else throw new IllegalArgumentException("User is not a racer.");
+    }
+
 
     /**
      * Gets a list of racers provided by the controller.

@@ -1,5 +1,6 @@
 package cz.zcu.kart_arena.service;
 
+import cz.zcu.kart_arena.model.Employee;
 import cz.zcu.kart_arena.model.Racer;
 import cz.zcu.kart_arena.model.User;
 import cz.zcu.kart_arena.repository.UserRepository;
@@ -43,9 +44,12 @@ public class AuthService {
                     }
                     return "RACER";
                 }
-                // Později sem přidáme: else if (user instanceof Employee) return "EMPLOYEE";
 
-                return "UNKNOWN";
+                // Checks if the user is an instance of the Employee class
+                if (user instanceof Employee) {
+                    return "EMPLOYEE";
+                }
+
             } else {
                 throw new IllegalArgumentException("Incorrect password.");
             }

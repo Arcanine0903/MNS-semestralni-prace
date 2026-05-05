@@ -60,7 +60,7 @@ public class RacerController {
                     request.address(),
                     request.phoneNumber()
             );
-            return ResponseEntity.ok("Závodník " + savedRacer.getName() + " byl úspěšně zaregistrován!");
+            return ResponseEntity.ok("Races " + savedRacer.getName() + " has been successfully registered!");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -76,6 +76,21 @@ public class RacerController {
         try {
             racerService.banRacer(id);
             return ResponseEntity.ok("Racer has been successfully banned.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    /**
+     * Unbans a racer by setting their isRestricted property to false.
+     * @param id - id of the racer to unban
+     * @return a response indicating success or failure of the unbanning
+     */
+    @PostMapping("/{id}/unban")
+    public ResponseEntity<String> unbanRacer(@PathVariable Long id) {
+        try {
+            racerService.unbanRacer(id);
+            return ResponseEntity.ok("Racer has been successfully unbanned.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

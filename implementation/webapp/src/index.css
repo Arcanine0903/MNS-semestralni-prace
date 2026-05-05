@@ -1,0 +1,12 @@
+/* Přidej toto na úplný začátek souboru */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: #121212;
+  color: #ffffff;
+  font-family: sans-serif;
+  overflow-x: hidden; /* Pojistka proti nechtěnému horizontálnímu posouvání */
+}
