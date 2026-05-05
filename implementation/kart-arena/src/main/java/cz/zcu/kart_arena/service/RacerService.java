@@ -1,11 +1,14 @@
 package cz.zcu.kart_arena.service;
 
+import cz.zcu.kart_arena.controller.RacerController;
 import cz.zcu.kart_arena.model.Racer;
 import cz.zcu.kart_arena.model.User;
+import cz.zcu.kart_arena.repository.RacerRepository;
 import cz.zcu.kart_arena.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Service class for Racer-related operations.
@@ -15,8 +18,11 @@ public class RacerService {
 
     private final UserRepository userRepository;
 
-    public RacerService(UserRepository userRepository) {
+    private final RacerRepository racerRepository;
+
+    public RacerService(UserRepository userRepository, RacerRepository racerRepository) {
         this.userRepository = userRepository;
+        this.racerRepository = racerRepository;
     }
 
     /**
@@ -54,5 +60,34 @@ public class RacerService {
 
             userRepository.save(racer);
         } else throw new IllegalArgumentException("User is not a racer.");
+    }
+
+
+    /**
+     * Gets a list of racers provided by the controller.
+     * @param searchKeyword - search keyword (can be empty to locate all racers)
+     * @return a list of RacerDto objects
+     */
+    public List<RacerController.RacerDto> getRacersList(String searchKeyword) {
+        List<Racer> racers;
+
+        // If a search keyword is provided, search for racers by name or username
+        if (searchKeyword != null && !searchKeyword.isBlank()) {
+            racers = racerRepository.findByNameContainingIgnoreCaseOrUsernameContainingIgnoreCase(searchKeyword, searchKeyword);
+        } else {
+            // If no keyword is provided, return all racers
+            racers = racerRepository.findAll();
+        }
+
+        // Transform the racers into RacerDto objects
+        return racers.stream()
+                .map(racer -> new RacerController.RacerDto(
+                        racer.getId(),
+                        racer.getName(),
+                        racer.getUsername(),
+                        racer.getCity(),
+                        racer.isRestricted()
+                ))
+                .toList();
     }
 }

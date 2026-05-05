@@ -1,14 +1,16 @@
 package cz.zcu.kart_arena.controller;
 
 import cz.zcu.kart_arena.model.Racer;
+import cz.zcu.kart_arena.repository.RacerRepository;
 import cz.zcu.kart_arena.service.RacerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
- * Controller for User-related operations.
+ * Controller for Racer-related operations.
  */
 @RestController
 @RequestMapping("/api/racers")
@@ -16,7 +18,7 @@ public class RacerController {
 
     private final RacerService racerService;
 
-    public RacerController(RacerService racerService) {
+    public RacerController(RacerService racerService, RacerRepository racerRepository) {
         this.racerService = racerService;
     }
 
@@ -76,5 +78,33 @@ public class RacerController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    /**
+     * Data Transfer Object for racer details.
+     * @param id - racer's id
+     * @param name - racer's full name
+     * @param username - racer's username
+     * @param city - racer's city of residence
+     * @param isRestricted - is the racer restricted?
+     */
+    public record RacerDto(
+            Long id,
+            String name,
+            String username,
+            String city,
+            boolean isRestricted
+    ) {}
+
+    /**
+     * Provides a full list of racers.
+     * @param search - search query (can be empty to show all racers)
+     * @return a list of racers matching the search criteria
+     */
+    @GetMapping
+    public ResponseEntity<List<RacerDto>> getAllRacers(@RequestParam(required = false) String search) {
+
+        List<RacerDto> racers = racerService.getRacersList(search);
+        return ResponseEntity.ok(racers);
     }
 }
