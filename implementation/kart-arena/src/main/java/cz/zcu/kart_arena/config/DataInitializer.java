@@ -53,14 +53,26 @@ public class DataInitializer {
                         "123456789"
                 );
 
+                Racer defaultRacer3 = new Racer(
+                        "Jan Ptak",
+                        "ptacekloskutacek",
+                        "asdasd",
+                        LocalDate.now(),
+                        "Praha",
+                        "Praga 1",
+                        "123456789"
+                );
+
                 // Save him to the database
                 userRepository.save(defaultEmployee);
                 userRepository.save(defaultRacer);
                 userRepository.save(defaultRacer2);
+                userRepository.save(defaultRacer3);
 
                 System.out.println("Default employee " + defaultEmployee.getName() + " created successfully.");
                 System.out.println("Default racer " + defaultRacer.getName() + " created successfully.");
                 System.out.println("Default racer " + defaultRacer2.getName() + " created successfully.");
+                System.out.println("Default racer " + defaultRacer3.getName() + " created successfully.");
             }
         };
     }

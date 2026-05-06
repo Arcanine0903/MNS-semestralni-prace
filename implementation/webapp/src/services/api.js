@@ -22,8 +22,14 @@ export async function loginUser(username, password) {
     }
 }
 
-export async function getRacers() {
-    const response = await fetch(`${BASE_URL}/racers`);
+export async function getRacers(searchQuery) {
+    let url = `${BASE_URL}/racers`;
+
+    if (searchQuery && searchQuery.trim() !== '') {
+        url += `?search=${encodeURIComponent(searchQuery.trim())}`;
+    }
+
+    const response = await fetch(url);
     if (!response.ok) {
         throw new Error('Was not able to fetch racers.');
     }

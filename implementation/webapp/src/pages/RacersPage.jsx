@@ -6,11 +6,15 @@ export default function RacersPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
 
+    const [searchQuery, setSearchQuery] = useState('');
+
+    // Runs once when the component mounts
+    // Fetches data from the API
     useEffect(() => {
 
         const fetchData = async () => {
             try {
-                const data = await getRacers();
+                const data = await getRacers('');
                 setRacers(data);
             } catch (err) {
                 setError(err.message);
@@ -23,6 +27,27 @@ export default function RacersPage() {
 
     }, []);
 
+    // Fetches data from the API based on the search query
+    const fetchRacersData = async (query) => {
+        setIsLoading(true);
+        setError('');
+        try {
+            const data = await getRacers(query);
+            setRacers(data);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    // Handles the search form submission
+    const handleSearch = (e) => {
+        e.preventDefault();
+        fetchRacersData(searchQuery);
+    };
+
+    // Toggles the ban status of a racer
     const handleToggleBan = async (racerId) => {
         try {
             await toggleBanRacer(racerId);
@@ -39,6 +64,7 @@ export default function RacersPage() {
         }
     };
 
+    // Toggles the unban status of a racer
     const handleToggleUnban = async (racerId) => {
         try {
             await toggleUnbanRacer(racerId);
@@ -64,6 +90,53 @@ export default function RacersPage() {
                 Customer administration
             </h1>
 
+            {/* Search form */}
+            <form
+                onSubmit={handleSearch}
+                style={{
+                    display: 'flex',
+                    gap: '15px',
+                    marginBottom: '30px',
+                    alignItems: 'center',
+                    backgroundColor: '#1e1e1e',
+                    padding: '20px',
+                    borderRadius: '8px'
+                }}
+            >
+                <label style={{ color: '#ccc', fontWeight: 'bold' }}>Locate customer:</label>
+
+                <input
+                    type="text"
+                    placeholder="Enter customer name or username."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    style={{ flex: 1, padding: '10px', borderRadius: '6px', backgroundColor: '#2a2a2a', color: 'white', border: '1px solid #444' }}
+                />
+
+                <button
+                    type="submit"
+                    style={{ backgroundColor: '#0084ff', color: 'white', padding: '10px 20px', borderRadius: '6px', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}
+                >
+                    Find
+                </button>
+
+                <button
+                    type="button"
+                    onClick={() => {
+                        setSearchQuery('');
+                        fetchRacersData('');
+                    }}
+                    style={{ backgroundColor: '#555', color: 'white', padding: '10px 20px', borderRadius: '6px', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}
+                >
+                    Reset Filter
+                </button>
+            </form>
+
+            {/* Informational messages */}
+            {isLoading && <div style={{ textAlign: 'center', marginBottom: '20px' }}>Loading data</div>}
+            {error && <div style={{ color: '#ff4d4d', textAlign: 'center', marginBottom: '20px' }}>Error: {error}</div>}
+
+            {/* Racers table */}
             <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', backgroundColor: '#1e1e1e', borderRadius: '8px', overflow: 'hidden' }}>
                     <thead style={{ backgroundColor: '#2a2a2a' }}>
