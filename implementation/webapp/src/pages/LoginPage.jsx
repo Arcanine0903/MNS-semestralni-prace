@@ -12,6 +12,11 @@ export default function LoginPage() {
     const { login } = useAuth();
     const navigate = useNavigate();
 
+    /**
+     * Handles the login form submission
+     * @param e - The form submission event
+     * @returns {Promise<void>} - A promise that resolves when the login is successful
+     */
     const handleLogin = async (e) => {
         e.preventDefault();
         setErrorMessage('');

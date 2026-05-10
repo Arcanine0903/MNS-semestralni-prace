@@ -20,6 +20,11 @@ public class RacerService {
 
     private final RacerRepository racerRepository;
 
+    /**
+     * RacerService class constructor.
+     * @param userRepository - repository for User class.
+     * @param racerRepository - repository for Racer class.
+     */
     public RacerService(UserRepository userRepository, RacerRepository racerRepository) {
         this.userRepository = userRepository;
         this.racerRepository = racerRepository;
@@ -62,6 +67,10 @@ public class RacerService {
         } else throw new IllegalArgumentException("User is not a racer.");
     }
 
+    /**
+     * Unbans a racer by setting their isRestricted property to false.
+     * @param id - id of the racer to unban
+     */
     public void unbanRacer(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Racer not found.") );
 

@@ -1,5 +1,6 @@
 package cz.zcu.kart_arena.controller;
 
+import cz.zcu.kart_arena.model.dto.RaceControlPayloadDto;
 import cz.zcu.kart_arena.service.RaceResultService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,23 +23,13 @@ public class RaceResultController {
         this.raceResultService = raceResultService;
     }
 
-    // Structure with a corresponding structure to incoming JSON data.
-    public record RaceControlJsonPayload(
-            Long raceId,
-            Long racerId,
-            Long kartId,
-            int placingStart,
-            int placingEnd,
-            Long bestTime
-    ) {}
-
     /**
      * Endpoint for receiving race results.
      * @param payload - JSON payload containing race result data.
      * @return a response indicating success or failure of the operation.
      */
     @PostMapping("/results")
-    public ResponseEntity<String> receiveResult(@RequestBody RaceControlJsonPayload payload) {
+    public ResponseEntity<String> receiveResult(@RequestBody RaceControlPayloadDto payload) {
         try {
             // The data is given to the service for processing.
             String message = raceResultService.processIncomingResult(

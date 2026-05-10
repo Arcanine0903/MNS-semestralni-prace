@@ -6,6 +6,12 @@ import cz.zcu.kart_arena.model.Racer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
+import java.util.List;
+
+/**
+ * Repository for RaceResult class.
+ */
 @Repository
 public interface RaceResultRepository extends JpaRepository<RaceResult, Long> {
 
@@ -17,4 +23,10 @@ public interface RaceResultRepository extends JpaRepository<RaceResult, Long> {
      */
     boolean existsByRaceAndRacer(Race race, Racer racer);
 
+    /**
+     * Finds all race results for a given race.
+     * @param raceId - id of the race
+     * @return List of RaceResult objects
+     */
+    List<RaceResult> findByRaceId(Long raceId);
 }

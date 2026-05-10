@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import {getRacers, toggleBanRacer, toggleUnbanRacer} from '../services/api';
+import {getRacers, banRacer, unbanRacer} from '../services/api';
 
 export default function RacersPage() {
     const [racers, setRacers] = useState([]);
@@ -7,9 +7,12 @@ export default function RacersPage() {
     const [error, setError] = useState('');
 
     const [searchQuery, setSearchQuery] = useState('');
+    const [racerToToggle, setRacerToToggle] = useState(null);
 
-    // Runs once when the component mounts
-    // Fetches data from the API
+    /**
+     * Runs once when the component mounts
+     * Fetches data from the API
+     */
     useEffect(() => {
 
         const fetchData = async () => {
@@ -27,7 +30,11 @@ export default function RacersPage() {
 
     }, []);
 
-    // Fetches data from the API based on the search query
+    /**
+     * Fetches racers data from the API based on the search query.
+     * @param query {string} - The search query to filter racers.
+     * @returns {Promise<void>} - A promise that resolves when the data is fetched.
+     */
     const fetchRacersData = async (query) => {
         setIsLoading(true);
         setError('');
@@ -41,16 +48,23 @@ export default function RacersPage() {
         }
     };
 
-    // Handles the search form submission
+    /**
+     * Handles the search form submission.
+     * @param e {React.FormEvent} - The form submission event.
+     */
     const handleSearch = (e) => {
         e.preventDefault();
         fetchRacersData(searchQuery);
     };
 
-    // Toggles the ban status of a racer
-    const handleToggleBan = async (racerId) => {
+    /**
+     * Handles the ban status of a racer.
+     * @param racerId {number} - The ID of the racer to ban.
+     * @returns {Promise<void>} - A promise that resolves when the ban operation is complete.
+     */
+    const handleBan = async (racerId) => {
         try {
-            await toggleBanRacer(racerId);
+            await banRacer(racerId);
 
             setRacers(prevRacers =>
                 prevRacers.map(racer =>
@@ -64,10 +78,14 @@ export default function RacersPage() {
         }
     };
 
-    // Toggles the unban status of a racer
-    const handleToggleUnban = async (racerId) => {
+    /**
+     * Handles the unbanned status of a racer.
+     * @param racerId {number} - The ID of the racer to unban.
+     * @returns {Promise<void>} - A promise that resolves when the unban operation is complete.
+     */
+    const handleUnban = async (racerId) => {
         try {
-            await toggleUnbanRacer(racerId);
+            await unbanRacer(racerId);
 
             setRacers(prevRacers =>
                 prevRacers.map(racer =>
@@ -161,7 +179,7 @@ export default function RacersPage() {
 
                             <td style={{ padding: '15px', textAlign: 'center' }}>
                                 <button
-                                    onClick={() => (racer.isRestricted ? handleToggleUnban(racer.id) : handleToggleBan(racer.id))}
+                                    onClick={() => setRacerToToggle(racer)}
                                     style={{
                                         backgroundColor: racer.isRestricted ? '#4dff4d' : '#ff4d4d',
                                         color: '#121212',
@@ -180,6 +198,48 @@ export default function RacersPage() {
                     </tbody>
                 </table>
             </div>
+
+            {/* Modal for confirmation */}
+            {racerToToggle && (
+                <div style={{
+                    position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                    display: 'flex', justifyContent: 'center', alignItems: 'center',
+                    zIndex: 1000
+                }}>
+                    <div style={{
+                        backgroundColor: '#1e1e1e', padding: '30px', borderRadius: '12px',
+                        boxShadow: '0 4px 15px rgba(0,0,0,0.5)', maxWidth: '400px', width: '100%', textAlign: 'center'
+                    }}>
+                        <h3 style={{ marginTop: 0, marginBottom: '20px' }}>Confirmation</h3>
+
+                        <p style={{ marginBottom: '30px', color: '#ccc', lineHeight: '1.5' }}>
+                            Do you really want to <strong>{racerToToggle.isRestricted ? 'unban' : 'ban'}</strong> user <br/>
+                            <span style={{ color: 'white', fontSize: '18px', display: 'block', marginTop: '10px' }}>{racerToToggle.username}?</span>
+                        </p>
+
+                        <div style={{ display: 'flex', justifyContent: 'center', gap: '15px' }}>
+                            <button
+                                onClick={() => {
+                                    racerToToggle.isRestricted ? handleBan(racerToToggle.id) : handleUnban(racerToToggle.id);
+                                    setRacerToToggle(null);
+                                }}
+                                style={{ backgroundColor: '#0084ff', color: 'white', padding: '10px 20px', borderRadius: '6px', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}
+                            >
+                                Confirm
+                            </button>
+
+                            <button
+                                onClick={() => setRacerToToggle(null)}
+                                style={{ backgroundColor: '#555', color: 'white', padding: '10px 20px', borderRadius: '6px', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 }

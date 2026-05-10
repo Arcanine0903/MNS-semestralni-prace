@@ -1,12 +1,16 @@
 package cz.zcu.kart_arena.service;
 
+import cz.zcu.kart_arena.controller.RaceController;
+import cz.zcu.kart_arena.controller.RacerController;
 import cz.zcu.kart_arena.model.Race;
 import cz.zcu.kart_arena.repository.RaceRepository;
 import org.springframework.stereotype.Service;
+import cz.zcu.kart_arena.model.dto.RaceDto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 /**
  * Service class for Race-related operations.
@@ -47,5 +51,20 @@ public class RaceService {
         Race newRace = new Race(raceDate, raceTime, track);
 
         return raceRepository.save(newRace);
+    }
+
+    /**
+     * Returns a list of races.
+     * @return a list of races.
+     */
+    public List<RaceDto> getRacesList() {
+        List<Race> races = raceRepository.findAll();
+
+        return races.stream()
+                .map(race -> new RaceDto(
+                        race.getId(),
+                        race.getRaceTime()
+                ))
+                .toList();
     }
 }

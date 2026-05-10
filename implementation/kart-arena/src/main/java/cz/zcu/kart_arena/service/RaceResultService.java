@@ -1,6 +1,7 @@
 package cz.zcu.kart_arena.service;
 
 import cz.zcu.kart_arena.model.*;
+import cz.zcu.kart_arena.model.dto.RaceResultDto;
 import cz.zcu.kart_arena.observer.RaceResultObserver;
 import cz.zcu.kart_arena.repository.*;
 import org.springframework.stereotype.Service;
@@ -85,5 +86,21 @@ public class RaceResultService {
         for (RaceResultObserver observer : observers) {
             observer.onNewRaceResult(newResult);
         }
+    }
+
+    /**
+     * Retrieves a list of results for a specific race.
+     * @param raceId the unique identifier of the race
+     * @return a list of RaceResultDto objects representing the results for the specified race
+     */
+    public List<RaceResultDto> getResultsForRace(Long raceId) {
+        return resultRepository.findByRaceId(raceId).stream()
+                .map(result -> new RaceResultDto(
+                        result.getId(),
+                        result.getRacer().getUsername(),
+                        result.getKart().getNumber(),
+                        result.getBestTime()
+                ))
+                .toList();
     }
 }

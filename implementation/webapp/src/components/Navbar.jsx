@@ -1,6 +1,11 @@
 import Button from './Button';
 import { useAuth } from '../context/AuthContext';
 
+/**
+ * Navbar component
+ * @returns {React.JSX.Element} - navbar element
+ * @constructor
+ */
 export default function Navbar() {
     const { role, logout } = useAuth();
 
@@ -24,6 +29,7 @@ export default function Navbar() {
                 <>
                     <Button text="Racers" to="/racers" />
                     <Button text="Race setup" to="/race-setup" />
+                    <Button text="Results" to="/results" />
                 </>
             )}
 

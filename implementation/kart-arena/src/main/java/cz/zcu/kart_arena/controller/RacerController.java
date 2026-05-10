@@ -1,6 +1,7 @@
 package cz.zcu.kart_arena.controller;
 
 import cz.zcu.kart_arena.model.Racer;
+import cz.zcu.kart_arena.model.dto.RegistrationRequestDto;
 import cz.zcu.kart_arena.repository.RacerRepository;
 import cz.zcu.kart_arena.service.RacerService;
 import org.springframework.http.ResponseEntity;
@@ -24,32 +25,12 @@ public class RacerController {
     }
 
     /**
-     * Data Transfer Object for registration request.
-     * @param name - racer's full name
-     * @param username - racer's chosen username
-     * @param password - racer's chosen password
-     * @param birthday - racer's birthday
-     * @param city - racer's city of residence
-     * @param address - racer's address
-     * @param phoneNumber - racer's phone number
-     */
-    public record RegistrationRequest(
-            String name,
-            String username,
-            String password,
-            LocalDate birthday,
-            String city,
-            String address,
-            String phoneNumber
-    ) {}
-
-    /**
      * End point for registering a new user.
      * @param request - registration request
      * @return a response indicating success or failure of the registration
      */
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegistrationRequest request) {
+    public ResponseEntity<String> register(@RequestBody RegistrationRequestDto request) {
         try {
             Racer savedRacer = racerService.registerRacer(
                     request.name(),

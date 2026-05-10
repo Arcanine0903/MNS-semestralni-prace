@@ -15,6 +15,10 @@ public class AuthService {
 
     private final UserRepository userRepository;
 
+    /**
+     * AuthService class constructor.
+     * @param userRepository - repository for User class.
+     */
     public AuthService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }

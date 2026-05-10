@@ -1,5 +1,12 @@
 import { Link } from 'react-router-dom';
 
+/**
+ * Button component
+ * @param text - button text
+ * @param to - link to navigate to
+ * @returns {React.JSX.Element} - button element
+ * @constructor
+ */
 export default function Button({ text, to }) {
     return (
         <Link to={to} style={{ textDecoration: 'none' }}>
