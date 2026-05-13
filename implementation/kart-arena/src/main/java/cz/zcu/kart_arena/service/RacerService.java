@@ -6,6 +6,7 @@ import cz.zcu.kart_arena.model.User;
 import cz.zcu.kart_arena.repository.RacerRepository;
 import cz.zcu.kart_arena.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import cz.zcu.kart_arena.model.dto.RacerDto;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -87,7 +88,7 @@ public class RacerService {
      * @param searchKeyword - search keyword (can be empty to locate all racers)
      * @return a list of RacerDto objects
      */
-    public List<RacerController.RacerDto> getRacersList(String searchKeyword) {
+    public List<RacerDto> getRacersList(String searchKeyword) {
         List<Racer> racers;
 
         // If a search keyword is provided, search for racers by name or username
@@ -100,7 +101,7 @@ public class RacerService {
 
         // Transform the racers into RacerDto objects
         return racers.stream()
-                .map(racer -> new RacerController.RacerDto(
+                .map(racer -> new RacerDto(
                         racer.getId(),
                         racer.getName(),
                         racer.getUsername(),

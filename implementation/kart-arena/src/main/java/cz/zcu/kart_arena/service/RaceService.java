@@ -1,8 +1,10 @@
 package cz.zcu.kart_arena.service;
 
+import cz.zcu.kart_arena.client.RaceControlClient;
 import cz.zcu.kart_arena.controller.RaceController;
 import cz.zcu.kart_arena.controller.RacerController;
 import cz.zcu.kart_arena.model.Race;
+import cz.zcu.kart_arena.model.dto.RaceControlSetupDto;
 import cz.zcu.kart_arena.repository.RaceRepository;
 import org.springframework.stereotype.Service;
 import cz.zcu.kart_arena.model.dto.RaceDto;
@@ -19,13 +21,16 @@ import java.util.List;
 public class RaceService {
 
     private final RaceRepository raceRepository;
+    private final RaceControlClient raceControlClient;
 
     /**
      * RaceService class constructor.
      * @param raceRepository - repository for Race class.
+     * @param raceControlClient - client for communicating with the RaceControl.
      */
-    public RaceService(RaceRepository raceRepository) {
+    public RaceService(RaceRepository raceRepository, RaceControlClient raceControlClient) {
         this.raceRepository = raceRepository;
+        this.raceControlClient =  raceControlClient;
     }
 
     /**
@@ -49,6 +54,10 @@ public class RaceService {
         }
 
         Race newRace = new Race(raceDate, raceTime, track);
+
+        // Mocked communication with the RaceControl.
+        RaceControlSetupDto setupDto = new RaceControlSetupDto(newRace.getId(), newRace.getTrack(), newRace.getRaceTime());
+        raceControlClient.sendRaceSetup(setupDto);
 
         return raceRepository.save(newRace);
     }

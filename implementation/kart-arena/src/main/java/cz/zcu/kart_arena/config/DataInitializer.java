@@ -27,10 +27,9 @@ public class DataInitializer {
 
                 // Create a new default employee
                 Employee defaultEmployee = new Employee(
-                        "admin",           // username
+                        "admin",  // username
                         "admin123",        // password
-                        "Jan",             // name
-                        "Novak",           // surname
+                        "Jan Burak",       // name
                         "900101/1234",     // birthCertificateNumber
                         "Praha",           // city
                         "Praha 1",         // address

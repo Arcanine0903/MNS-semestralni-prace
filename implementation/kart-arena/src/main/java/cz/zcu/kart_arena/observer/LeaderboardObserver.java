@@ -12,25 +12,30 @@ import java.util.Observer;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * Observer class for receiving race results and sending them to subscribed clients.
+ */
 @Component
 public class LeaderboardObserver implements RaceResultObserver {
 
-    // Paměť otevřených spojení: Kteří uživatelé (SseEmitters) sledují jaký závod (Long raceId)
     private final Map<Long, List<SseEmitter>> emitters = new ConcurrentHashMap<>();
 
-    // 1. Metoda, kterou zavolá Controller, když uživatel otevře stránku závodu v Reactu
     public SseEmitter subscribeToRace(Long raceId) {
         SseEmitter emitter = new SseEmitter(0L); // 0L - connection never expires
 
         emitters.computeIfAbsent(raceId, k -> new CopyOnWriteArrayList<>()).add(emitter);
 
-        // Uklidíme paměť, pokud uživatel zavře prohlížeč
+        // Memory cleanup
         emitter.onCompletion(() -> emitters.get(raceId).remove(emitter));
         emitter.onTimeout(() -> emitters.get(raceId).remove(emitter));
 
         return emitter;
     }
 
+    /**
+     * Notifies all subscribers about a new race result.
+     * @param newResult - race result object
+     */
     @Override
     public void onNewRaceResult(RaceResult newResult) {
         Long raceId = newResult.getRace().getId();

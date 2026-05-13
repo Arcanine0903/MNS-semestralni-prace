@@ -221,7 +221,7 @@ export default function RacersPage() {
                         <div style={{ display: 'flex', justifyContent: 'center', gap: '15px' }}>
                             <button
                                 onClick={() => {
-                                    racerToToggle.isRestricted ? handleBan(racerToToggle.id) : handleUnban(racerToToggle.id);
+                                    racerToToggle.isRestricted ? handleUnban(racerToToggle.id) : handleBan(racerToToggle.id);
                                     setRacerToToggle(null);
                                 }}
                                 style={{ backgroundColor: '#0084ff', color: 'white', padding: '10px 20px', borderRadius: '6px', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}

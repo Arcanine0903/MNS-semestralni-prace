@@ -1,6 +1,7 @@
 package cz.zcu.kart_arena.controller;
 
 import cz.zcu.kart_arena.model.Racer;
+import cz.zcu.kart_arena.model.dto.RacerDto;
 import cz.zcu.kart_arena.model.dto.RegistrationRequestDto;
 import cz.zcu.kart_arena.repository.RacerRepository;
 import cz.zcu.kart_arena.service.RacerService;
@@ -20,7 +21,7 @@ public class RacerController {
 
     private final RacerService racerService;
 
-    public RacerController(RacerService racerService, RacerRepository racerRepository) {
+    public RacerController(RacerService racerService) {
         this.racerService = racerService;
     }
 
@@ -77,21 +78,6 @@ public class RacerController {
         }
     }
 
-    /**
-     * Data Transfer Object for racer details.
-     * @param id - racer's id
-     * @param name - racer's full name
-     * @param username - racer's username
-     * @param city - racer's city of residence
-     * @param isRestricted - is the racer restricted?
-     */
-    public record RacerDto(
-            Long id,
-            String name,
-            String username,
-            String city,
-            boolean isRestricted
-    ) {}
 
     /**
      * Provides a full list of racers.

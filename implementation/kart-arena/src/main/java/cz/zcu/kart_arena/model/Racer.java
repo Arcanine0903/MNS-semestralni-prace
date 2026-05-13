@@ -11,17 +11,10 @@ import java.time.LocalDate;
 @Table(name = "racer")
 public class Racer extends User{
 
-    @Column(nullable = false)
-    private String name;
-
-    private LocalDate birthday;
-    private String city;
-    private String address;
-
-    @Column(nullable = false)
-    private String phoneNumber;
-
     private boolean isRestricted = false;
+
+    @Column(nullable = false)
+    private LocalDate birthday;
 
     // Empty constructor required by JPA
     public Racer() {}
@@ -37,24 +30,15 @@ public class Racer extends User{
      * @param phoneNumber - racer's phone number
      */
     public Racer(String name, String username, String password, LocalDate birthday, String city, String address, String phoneNumber) {
-        super(username, password);
-        this.name = name;
+        super(username, password, name, city, address, phoneNumber);
         this.birthday = birthday;
-        this.city = city;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
     }
 
     // Getters
-    public String getName() { return name; }
-    public LocalDate getBirthday() { return birthday; }
-    public String getCity() { return city; }
-    public String getAddress() { return address; }
-    public String getPhoneNumber() { return phoneNumber; }
     public boolean isRestricted() { return isRestricted; }
+    public LocalDate getBirthday() { return birthday; }
 
     // Business methods
-
     /**
      * Bans the racer
      */
